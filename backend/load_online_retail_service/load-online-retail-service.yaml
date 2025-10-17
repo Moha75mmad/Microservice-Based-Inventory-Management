@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-online-retail-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-online-retail-service
+  template:
+    metadata:
+      labels:
+        app: load-online-retail-service
+    spec:
+      containers:
+      - name: load-online-retail-service
+        image: localhost:5006/load-online-retail-service  # نام Docker Image شما
+        ports:
+        - containerPort: 5006
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://user:password@postgres-service:5432/mydatabase"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-online-retail-service
+spec:
+  selector:
+    app: load-online-retail-service
+  ports:
+  - protocol: TCP
+    port: 8002  # پورت خارجی
+    targetPort: 5006  # پورت داخلی
+  type: LoadBalancer

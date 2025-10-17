@@ -1,0 +1,33 @@
+# deployment-ui.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-ui
+  template:
+    metadata:
+      labels:
+        app: warehouse-ui
+    spec:
+      containers:
+      - name: warehouse-ui
+        image: localhost:5007/warehouse-ui:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-ui-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: warehouse-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

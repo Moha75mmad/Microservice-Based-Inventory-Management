@@ -1,0 +1,107 @@
+ساخت پروژه react با استفاده از دستور npx
+
+# npx create-react-app temp-frontend
+
+ساخت تصویر فرانت
+
+docker build -t warehouse-ui:latest .
+docker run -d -p 5007:5000 --name regwarefront registry:2 
+docker tag warehouse-ui:latest localhost:5007/warehouse-ui:latest
+docker push localhost:5007/warehouse-ui:latest
+
+
+استقرار فرانت بر روی کوبرنتیز
+
+kubectl apply -f deployment-ui.yaml
+
+
+حذف فرانت از کوبرنتیز برای به روز رسانی تصویر آن
+
+kubectl delete deployment warehouse-ui
+kubectl delete service warehouse-ui-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t inventory-service:latest .
+docker run -d -p 5001:5000 --name reginventory registry:2 
+docker tag inventory-service:latest localhost:5001/inventory-service:latest
+docker push localhost:5001/inventory-service:latest
+
+kubectl apply -f inventory-service.yaml
+
+kubectl delete deployment inventory-service
+kubectl delete service inventory-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t dashboard-service:latest .
+docker run -d -p 5004:5000 --name regdashoard registry:2 
+docker tag dashboard-service:latest localhost:5004/dashboard-service:latest
+docker push localhost:5004/dashboard-service:latest
+
+kubectl apply -f dashboard-service.yaml
+
+kubectl delete deployment dashboard-service
+kubectl delete service dashboard-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t load-online-retail-service:latest .
+docker run -d -p 5006:5000 --name regloadonlineretail registry:2 
+docker tag load-online-retail-service:latest localhost:5006/load-online-retail-service:latest
+docker push localhost:5006/load-online-retail-service:latest
+
+kubectl apply -f load-online-retail-service.yaml
+
+kubectl delete deployment load-online-retail-service
+kubectl delete service load-online-retail-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t order-service:latest .
+docker run -d -p 5003:5000 --name regorder registry:2 
+docker tag order-service:latest localhost:5003/order-service:latest
+docker push localhost:5003/order-service:latest
+
+kubectl apply -f order-service.yaml
+
+kubectl delete deployment order-service
+kubectl delete service order-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t stream-service:latest .
+docker run -d -p 5005:5000 --name regstream registry:2 
+docker tag stream-service:latest localhost:5005/stream-service:latest
+docker push localhost:5005/stream-service:latest
+
+kubectl apply -f stream-service.yaml
+
+kubectl delete deployment stream-service
+kubectl delete service stream-service
+
+------------------------------------------------------------------------------------------
+
+docker build -t transaction-service:latest .
+docker run -d -p 5002:5000 --name regtransaction registry:2 
+docker tag transaction-service:latest localhost:5002/transaction-service:latest
+docker push localhost:5002/transaction-service:latest
+
+kubectl apply -f transaction-service.yaml
+
+kubectl delete deployment transaction-service
+kubectl delete service transaction-service
+
+------------------------------------------------------------------------------------------
+
+kubectl logs -f deployment/inventory-service
+
+kubectl logs -f deployment/dashboard-service
+
+kubectl logs -f deployment/load-online-retail-service
+
+kubectl logs -f deployment/order-service
+
+kubectl logs -f deployment/stream-service
+
+kubectl logs -f deployment/transaction-service

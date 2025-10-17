@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - name: order-service
+        image: localhost:5003/order-service  # نام Docker Image شما
+        ports:
+        - containerPort: 5003
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://user:password@postgres-service:5432/mydatabase"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  selector:
+    app: order-service
+  ports:
+  - protocol: TCP
+    port: 8001  # پورت خارجی
+    targetPort: 5003  # پورت داخلی
+  type: LoadBalancer

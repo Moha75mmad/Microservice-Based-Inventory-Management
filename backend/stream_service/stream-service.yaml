@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stream-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stream-service
+  template:
+    metadata:
+      labels:
+        app: stream-service
+    spec:
+      containers:
+      - name: stream-service
+        image: localhost:5005/stream-service  # نام Docker Image شما
+        ports:
+        - containerPort: 5005
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://user:password@postgres-service:5432/mydatabase"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stream-service
+spec:
+  selector:
+    app: stream-service
+  ports:
+  - protocol: TCP
+    port: 8004  # پورت خارجی
+    targetPort: 5005  # پورت داخلی
+  type: LoadBalancer
